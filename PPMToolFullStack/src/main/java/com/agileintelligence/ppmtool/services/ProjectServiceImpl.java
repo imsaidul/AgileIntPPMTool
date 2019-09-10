@@ -24,4 +24,27 @@ public class ProjectServiceImpl implements ProjectService {
 				
 	}
 
+	@Override
+	public Project findProjectByProjectIdentifier(String projectId) {
+		Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
+		if(project == null) {
+			throw new ProjectIdException("ProjectIdentifier '"+projectId+"' does not exists.");
+		}
+		return project;
+	}
+
+	@Override
+	public Iterable<Project> findAllProjects() {
+		return projectRepository.findAll();
+	}
+
+	@Override
+	public void deleteProjectByIdentifier(String projectId) {
+		Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
+		if(project == null) {
+			throw new ProjectIdException("Can't delete '"+projectId+"'. This project doesn't exist");
+		}
+		projectRepository.delete(project);
+	}
+
 }
